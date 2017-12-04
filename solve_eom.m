@@ -25,9 +25,9 @@ function [ q,t ] = solve_eom( )
 M = mass_matrix_for_solving(params);
 K = stiffness_matrix_for_solving(params,forces);
 
-roll = 5 *pi*180;
-pitch = 2 *pi*180;
-yaw = 0 *pi*180;
+roll = 5 *pi/180;
+pitch = 2 *pi/180;
+yaw = 0 *pi/180;
 
 %%% initial condition
 q0 = [0 0 1 roll pitch yaw 0 0 0 0 0 0];
@@ -53,7 +53,7 @@ plot(T,Q(:,6),'c');
 
 legend('x','y','z','side-side','fore-aft','yaw');
 
-%axis([t0 tf -1 1]);
+axis([t0 tf -0.2 0.2]);
 
 end
 
