@@ -5,7 +5,7 @@ function [ D ] = damping_matrix_for_solving( forces )
 %%% only features hydrodynamic damping force due to heave velocity from
 %%% drag on the mono pile bottom for now
 
-chdz = forces.chdz
+chdz = forces.chdz;
 
 %%% Apply morrisons drag equation:
 

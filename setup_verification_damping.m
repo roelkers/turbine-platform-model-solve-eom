@@ -37,8 +37,8 @@ function [params,forces] = setup_verification_damping()
 %%% lin : distance from point I to N [m]
 %%% dw : water depth  [m]
 
+params.g = 9.81;
 params.rho_w = 1000;
-params.D  = 0;
 params.mt = 1.5e6;
 params.mn = 0;
 params.m0 = 1.5e6;
@@ -46,17 +46,28 @@ params.m1 = 5.9605e-008;
 params.height = 50;
 params.width = 20;
 params.depth = 3;
+params.D  = sqrt(20^2+3^2);
 
-params.vw = displaced_water_volume(params);
 params.lew = water_depth_monopile(params);
 params.leb = buoyancy_centre(params);
 params.leg = params.height/2;
 
+params.It = mass_moment_inertia_in_yaw(params);
+params.m2 = mass_moment_inertia_in_roll(params);
 
+params.lbg = params.leg-params.leb;
 
 %%% assumption due to missing information about model
 %%% distance between cable suspension C and gravitational center G 
 params.lcg = -0.3;
+
+%%% Mooring cables
+%%% Parameters
+params.w  = 108.63;%from jeremiahs thesis 
+params.lc = 835.5; %from jeremiahs thesis
+params.c = 837.6; %from jeremiahs thesis
+params.fc = 89000;
+params.dw = 300;
 
 %%% Stiffness Forces
 
@@ -71,10 +82,10 @@ params.lcg = -0.3;
 forces.kcx = 1.2606e005;
 forces.kcy = 1.2606e005;
 forces.kcz = 1.2606e005;
-forces.kbz = 5.0276e004;
-forces.khsx = 6.9454e006;
-forces.khsy = 6.9454e006;
-forces.ktc = 6.6853e005;
+forces.kbz = vertical_stiffness_due_to_buoyancy(params);
+forces.khsx = hydrostatic_stiffness_due_to_side_side_roll(params);
+forces.khsy = hydrostatic_stiffness_due_to_fore_aft_roll(params);
+forces.ktc = cable_stiffness_due_to_torsion(params);
 
 %%% Damping Forces
 

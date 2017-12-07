@@ -45,7 +45,7 @@ options=odeset('Mass',M);
 [T,Q]=ode23s(@(t,q) rhs(t,q,K,D) ,tspan ,q0 ,options); 
 
 %%%
-tfplot = 60;
+tfplot = 100;
 %%% X
 subplot(2,3,1)
 plot(T,Q(:,1),'r');
@@ -63,25 +63,22 @@ subplot(2,3,3);
 plot(T,Q(:,3),'m');
 axis([t0 tfplot -1 1]);
 xlabel('Time [s]')
-ylabel('heave [m]')
+ylabel('sway [m]')
 %%% Theta_X
 subplot(2,3,4);
 plot(T,Q(:,4)*180/pi,'k');
 axis([t0 tfplot -6 6]);
 xlabel('Time [s]')
-ylabel('roll [deg]')
 %%% Theta_Y
 subplot(2,3,5);
 plot(T,Q(:,5)*180/pi,'b');
 axis([t0 tfplot -2 3]);
 xlabel('Time [s]')
-ylabel('pitch [deg]')
 %%% Theta_Z
 subplot(2,3,6);
 plot(T,Q(:,6)*180/pi,'c');
 axis([t0 tfplot -0.04 0.01]);
 xlabel('Time [s]')
-ylabel('yaw [deg]')
 
 title('ode solution');
 %legend('x','y','z','side-side','fore-aft','yaw');
