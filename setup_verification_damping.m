@@ -38,7 +38,7 @@ function [params,forces] = setup_verification_damping()
 %%% dw : water depth  [m]
 
 params.g = 9.81;
-params.rho_w = 1000;
+params.rho_w = 1025; % paper,p.33
 params.mt = 1.5e6;
 params.mn = 0;
 params.m0 = 1.5e6;
@@ -69,6 +69,17 @@ params.c = 837.6; %from jeremiahs thesis
 params.fc = 8.9e04;%from jeremiahs thesis
 params.dw = 300;
 
+%%% Wave Force
+%%% Parameter
+
+params.caw = 1; %paper, p.33
+params.cdw = 1.5; %lange Rechteckplatte: 2, Dünne Platte: 1-2
+params.nz = 100; %number of discrete points for z (force integration)
+params.vwx = 0;
+params.vwy = params.vwx;
+params.vwxdot = 0;
+params.vwydot = 0;
+
 %%% Stiffness Forces
 
 %%% kcx : cable horizontal stiffness, x-direction [N/m]
@@ -91,6 +102,6 @@ forces.ktc = cable_stiffness_due_to_torsion(params);
 
 %%% Drag parameters
 params.xi = 0.2; 
-params.cm = 1; %initial guess
+params.cm = 1 + params.caw; %initial guess
 
 end

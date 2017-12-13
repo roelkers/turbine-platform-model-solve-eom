@@ -9,12 +9,12 @@ function [ q,t ] = solve_eom( )
 %%% q(4): (Theta_x) side-side roll [rad]
 %%% q(5): (Theta_y) fore-aft roll [rad]
 %%% q(6): (Theta_z) yaw [rad]
-%%% q(7): (x) fore-aft displacement velocity [m/s]
-%%% q(8): (y) side-side displacement velocity [m/s]
-%%% q(9): (z) negative-heave displacement velocity [m/s]
-%%% q(10): (Theta_x) side-side roll velocity [rad/s]
-%%% q(11): (Theta_y) fore-aft roll velocity [rad/s]
-%%% q(12): (Theta_z) yaw velocity [rad/s]
+%%% q(7): (xdot) fore-aft displacement velocity [m/s]
+%%% q(8): (ydot) side-side displacement velocity [m/s]
+%%% q(9): (zdot) negative-heave displacement velocity [m/s]
+%%% q(10): (Thetadot_x) side-side roll velocity [rad/s]
+%%% q(11): (Thetadot_y) fore-aft roll velocity [rad/s]
+%%% q(12): (Thetadot_z) yaw velocity [rad/s]
 
 %%% Obtain system parameters and forces
 

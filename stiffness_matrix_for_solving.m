@@ -13,14 +13,23 @@ function [ K ] = stiffness_matrix_for_solving( params,forces )
 %%% For detailed explanation of parameters and model
 %%% refer to paper of TU Denmark
 
+
 %%% DOF 
 %%% Vector q contains the 6 DOF of the system
-%%% q(1): (x) fore-aft displacement
-%%% q(2): (y) side-side displacement
-%%% q(3): (z) negative-heave displacement
-%%% q(4): (Theta_x) side-side roll
-%%% q(5): (Theta_y) fore-aft roll
-%%% q(6): (Theta_z) yaw
+
+%%% q(1): (x) fore-aft displacement [m]
+%%% q(2): (y) side-side displacement [m]
+%%% q(3): (z) negative-heave displacement [m]
+%%% q(4): (Theta_x) side-side roll [rad]
+%%% q(5): (Theta_y) fore-aft roll [rad]
+%%% q(6): (Theta_z) yaw [rad]
+%%% q(7): (xdot) fore-aft displacement velocity [m/s]
+%%% q(8): (ydot) side-side displacement velocity [m/s]
+%%% q(9): (zdot) negative-heave displacement velocity [m/s]
+%%% q(10): (Thetadot_x) side-side roll velocity [rad/s]
+%%% q(11): (Thetadot_y) fore-aft roll velocity [rad/s]
+%%% q(12): (Thetadot_z) yaw velocity [rad/s]
+
 
 %%% System parameters 
 
