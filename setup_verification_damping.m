@@ -66,7 +66,7 @@ params.lcg = -0.3;
 params.w  = 108.63;%from jeremiahs thesis 
 params.lc = 835.5; %from jeremiahs thesis
 params.c = 837.6; %from jeremiahs thesis
-params.fc = 89000;
+params.fc = 8.9e04;%from jeremiahs thesis
 params.dw = 300;
 
 %%% Stiffness Forces
@@ -79,9 +79,9 @@ params.dw = 300;
 %%% khsy : water level hydrostatic stiffness due to side-side-roll [N/rad]
 %%% ktc : cable stiffness due to torsion [N/rad]
 
-forces.kcx = 1.2606e005;
-forces.kcy = 1.2606e005;
-forces.kcz = 1.2606e005;
+forces.kcx = 1.2606e006;%1.2606e005;
+forces.kcy = 5*1.2606e006; %1.2606e005;
+forces.kcz = 1.2606e007;%1.2606e005;
 forces.kbz = vertical_stiffness_due_to_buoyancy(params);
 forces.khsx = hydrostatic_stiffness_due_to_side_side_roll(params);
 forces.khsy = hydrostatic_stiffness_due_to_fore_aft_roll(params);
@@ -91,10 +91,6 @@ forces.ktc = cable_stiffness_due_to_torsion(params);
 
 %%% Drag parameters
 params.xi = 0.2; 
-f_zg = 0.0362; % third column from table in paper
-params.omega_zg = 2*pi*f_zg; %cyclic/angular frequency
 params.cm = 1; %initial guess
-
-forces.chdz = damping_constant_due_to_heave_velocity(params);
 
 end
