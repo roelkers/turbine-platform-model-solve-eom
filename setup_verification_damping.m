@@ -37,6 +37,10 @@ function [params,forces] = setup_verification_damping()
 %%% lin : distance from point I to N [m]
 %%% dw : water depth  [m]
 
+%%% Model setting: "box" or "cylinder"
+
+params.model = 'box';
+
 params.g = 9.81;
 params.rho_w = 1025; % paper,p.33
 params.mt = 1.5e6;
@@ -46,7 +50,6 @@ params.m1 = 5.9605e-008;
 params.height = 50;
 params.width = 20;
 params.depth = 3;
-params.D  = sqrt(20^2+3^2);
 
 params.lew = water_depth_monopile(params);
 params.leb = buoyancy_centre(params);
@@ -100,8 +103,8 @@ forces.ktc = cable_stiffness_due_to_torsion(params);
 
 %%% Damping Forces
 
-%%% Drag parameters
-params.xi = 0.2; 
-params.cm = 1 + params.caw; %initial guess
+%%% Damping ratios
+params.zeta_roll = 0.2;
+params.zeta_side = 0;
 
 end

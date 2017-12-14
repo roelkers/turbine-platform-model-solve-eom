@@ -25,12 +25,15 @@ function [ lew ] = water_depth_monopile( params )
 %%%      /  | |  \
 %%%     /   |-|   \ E(Mono Pile bottom, ballast)
 
-m0 = params.m0;
-rho_w = params.rho_w;
-depth = params.depth;
-width = params.width;
+if(strcmp(params.model,'box'))
+    
+    m0 = params.m0;
+    rho_w = params.rho_w;
+    depth = params.depth;
+    width = params.width;
 
-lew = m0/(depth*width*rho_w);
-
+    lew = m0/(depth*width*rho_w);
+else if(strcmp(params.model,'cylinder'))
+    end       
 end
 

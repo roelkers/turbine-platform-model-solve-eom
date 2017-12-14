@@ -37,15 +37,13 @@ Om = zeros(6,1);
 for i=1:6
     Om(i) = sqrt(Lam(i,i));
 end
-%%% Damping is dependent on eigenfrequency of heave mode
-params.omega_zg = Om(3); 
 
 %%% Construct damping matrix
-D = damping_matrix_for_solving(params,forces);
+D = damping_matrix_for_solving(params,M,K,Om);
 
 roll = 5 *pi/180;
 pitch = 2 *pi/180;
-yaw = 0.01 *pi/180;
+yaw = 0 *pi/180;
 
 %%% initial condition
 q0 = [0 0 1 roll pitch yaw 0 0 0 0 0 0];
@@ -60,7 +58,6 @@ options=odeset('Mass',M);
 
 %%% solve with ode23s
 [T,Q]=ode23s(@(t,q) rhs(t,q,K,D,params) ,tspan ,q0 ,options); 
-
 
 %%%
 tfplot = 60;

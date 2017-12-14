@@ -1,4 +1,4 @@
-function [params,forces] = setup()
+function [params,forces] = setup_verification_damping()
 
 %%% Floating Platform Model
 %%% Author: Rufus Oelkers
@@ -37,23 +37,53 @@ function [params,forces] = setup()
 %%% lin : distance from point I to N [m]
 %%% dw : water depth  [m]
 
-params.mn = 2.385e005;
-params.m0 = 2.4764e006;
+%%% Model setting: "box" or "cylinder"
+
+params.model = 'box';
+
+params.g = 9.81;
+params.rho_w = 1025; % paper,p.33
+params.mt = 1.5e6;
+params.mn = 0;
+params.m0 = 1.5e6;
 params.m1 = 5.9605e-008;
-params.m2 = 1.2622e010;
-params.It = 2.7879e006;
-%params.leb = 72.6;
-params.lbg = -0.9;
-%params.lgw = 52.7;
-%params.lwi = 10.6;
-%params.lin = 68;
-%params.dw = 300;
+params.height = 50;
+params.width = 20;
+params.depth = 3;
+
+params.lew = water_depth_monopile(params);
+params.leb = buoyancy_centre(params);
+params.leg = params.height/2;
+
+params.It = mass_moment_inertia_in_yaw(params);
+params.m2 = mass_moment_inertia_in_roll(params);
+
+params.lbg = params.leg-params.leb;
 
 %%% assumption due to missing information about model
 %%% distance between cable suspension C and gravitational center G 
 params.lcg = -0.3;
 
-%%% Forces
+%%% Mooring cables
+%%% Parameters
+params.w  = 108.63;%from jeremiahs thesis 
+params.lc = 835.5; %from jeremiahs thesis
+params.c = 837.6; %from jeremiahs thesis
+params.fc = 8.9e04;%from jeremiahs thesis
+params.dw = 300;
+
+%%% Wave Force
+%%% Parameter
+
+params.caw = 1; %paper, p.33
+params.cdw = 1.5; %lange Rechteckplatte: 2, Dünne Platte: 1-2
+params.nz = 100; %number of discrete points for z (force integration)
+params.vwx = 0;
+params.vwy = params.vwx;
+params.vwxdot = 0;
+params.vwydot = 0;
+
+%%% Stiffness Forces
 
 %%% kcx : cable horizontal stiffness, x-direction [N/m]
 %%% kcy : cable horizontal stiffness, y-direction [N/m]
@@ -63,12 +93,17 @@ params.lcg = -0.3;
 %%% khsy : water level hydrostatic stiffness due to side-side-roll [N/rad]
 %%% ktc : cable stiffness due to torsion [N/rad]
 
-forces.kcx = 1.2606e005;
-forces.kcy = 1.2606e005;
-forces.kcz = 1.2606e005;
-forces.kbz = 5.0276e004;
-forces.khsx = 6.9454e006;
-forces.khsy = 6.9454e006;
-forces.ktc = 6.6853e005;
+forces.kcx = 1.2606e006;%1.2606e005;
+forces.kcy = 5*1.2606e006; %1.2606e005;
+forces.kcz = 1.2606e007;%1.2606e005;
+forces.kbz = vertical_stiffness_due_to_buoyancy(params);
+forces.khsx = hydrostatic_stiffness_due_to_side_side_roll(params);
+forces.khsy = hydrostatic_stiffness_due_to_fore_aft_roll(params);
+forces.ktc = cable_stiffness_due_to_torsion(params);
+
+%%% Damping Forces
+
+%%% Damping ratio
+params.zeta = 
 
 end

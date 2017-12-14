@@ -20,55 +20,47 @@ function [ F ] = force_vector( params, q)
 %%% q(11): (Thetadot_y) fore-aft roll velocity [rad/s]
 %%% q(12): (Thetadot_z) yaw velocity [rad/s]
 
-nz = params.nz;
 
-rho_w = params.rho_w;
-cdw = params.cdw;
-width = params.width;
-depth = params.depth;
-caw = params.caw;
-leg = params.leg;
-lew = params.lew;
+ function pwx = pwx(z)
+            udotxg = q(7) + z * q(11); 
+            pwx = 1/2 * rho_w.*cdw*depth  .* abs(vwx-udotxg) .*(vwx-udotxg);%+ ...
+          %pi/4* rho_w*depth*width*(vwxdot+caw*(vwxdot-udotdotxg)) 
+ end
+    
+ function pwy = pwy(z)
+            udotyg = q(8) + z * q(10);
+            pwy = 1/2 .* rho_w*cdw*width  .* abs(vwy-udotyg) .*(vwy-udotyg);
+          %pi/4* rho_w*depth*width*(vwydot+caw*(vwydot-udotdotyg)) 
+ end
 
-vwx = params.vwx;
-vwxdot= params.vwxdot;
-vwy = params.vwy;
-vwydot = params.vwydot;
+if(strcmp(params.model,'box'))
+    nz = params.nz;
 
-%z = linspace(-leg,-lew,nz);
+    rho_w = params.rho_w;
+    cdw = params.cdw;
+    width = params.width;
+    depth = params.depth;
+    caw = params.caw;
+    leg = params.leg;
+    lew = params.lew;
 
-    function pwx = pwx(z)
-        udotxg = q(7) + z * q(11); 
-        pwx = 1/2 * rho_w.*cdw*depth  .* abs(vwx-udotxg) .*(vwx-udotxg);%+ ...
-      %pi/4* rho_w*depth*width*(vwxdot+caw*(vwxdot-udotdotxg)) 
-    end
+    vwx = params.vwx;
+    vwxdot= params.vwxdot;
+    vwy = params.vwy;
+    vwydot = params.vwydot;
 
-    function pwy = pwy(z)
-        udotyg = q(8) + z * q(10);
-        pwy = 1/2 .* rho_w*cdw*width  .* abs(vwy-udotyg) .*(vwy-udotyg);
-      %pi/4* rho_w*depth*width*(vwydot+caw*(vwydot-udotdotyg)) 
-    end
+    F = zeros(12,1);
 
-%udotxg = ones(nz,1)*q(7) + z*q(11); % udot_xg = qdot_xg + zg*thetadot_yg;
-%udotyg = ones(nz,1)*q(8) - z*q(10); % udot_yg = qdot_yg - zg*thetadot_xg;
+    F(7) = quad(@(z) pwx(z),-leg,-lew);
+    F(8) = quad(@(z) pwy(z),-leg,-lew);
 
-%%% Wave formula
+    F(10) = quad(@(z) z.*pwx(z),-leg,-lew);
+    F(11) = quad(@(z) z.*pwy(z),-leg,-lew);
 
-%pwx = 1/2 * rho_w*cdw*depth  * abs(vwx-udotxg) *(vwx-udotxg); %+ ...
-      %pi/4* rho_w*depth*width*(vwxdot+caw*(vwxdot-udotdotxg)) 
-%pwy = 1/2 * rho_w*cdw*width  * abs(vwy-udotyg) *(vwy-udotyg); %+ ...
-      %pi/4* rho_w*depth*width*(vwydot+caw*(vwydot-udotdotyg))   
+else if(strcmp(params.model,'cylinder'))
+    end 
 
-%%% Force result integration
-
-F = zeros(12,1);
-
-F(7) = quad(@(z) pwx(z),-leg,-lew);
-F(8) = quad(@(z) pwy(z),-leg,-lew);
-
-F(10) = quad(@(z) z.*pwx(z),-leg,-lew);
-F(11) = quad(@(z) z.*pwy(z),-leg,-lew);
-
+end
 
 end
 

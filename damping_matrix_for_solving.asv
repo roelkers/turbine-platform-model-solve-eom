@@ -13,6 +13,7 @@ function [ D ] = damping_matrix_for_solving(params, M,K,Om )
 %%% It is assumed that zeta_1 = zeta_2 for a cylinder.
 %%% For a box they are not equal.
 
+if(strcmp(params.model,'box'))
 zeta1 = params.zeta_roll;
 zeta2 = params.zeta_side;
 
@@ -21,6 +22,8 @@ alpha = 2*Om(1)*Om(2)/(Om(2)^2-Om(1)^2)*(Om(2)*zeta1 -Om(1)*zeta2);
 beta = 2*Om(1)*Om(2)/(Om(2)^2-Om(1)^2)*(-1/Om(2)*zeta1 + 1/Om(1)*zeta2);
 
 D = real(alpha*M + beta*K);
-
+else if(strcmp(params.model,'cylinder'))
+    end 
+end    
 end
 

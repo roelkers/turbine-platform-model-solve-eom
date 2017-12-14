@@ -21,11 +21,14 @@ function [ m2 ] = mass_moment_inertia_in_roll( params )
 %%%      /  | |  \
 %%%     /   |-|   \ E(Mono Pile bottom, ballast)
 
-m0 = params.m0;
-height = params.height;
-depth = params.depth;
+if(strcmp(params.model,'box'))
 
-m2 = 1/12 *m0 * (height^2 + depth^2);
+    m0 = params.m0;
+    height = params.height;
+    depth = params.depth;
 
+    m2 = 1/12 *m0 * (height^2 + depth^2);
+else if(strcmp(params.model,'cylinder'))
+    end  
 end
 
